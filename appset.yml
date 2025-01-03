@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-env-network-policies # change name each cluster and env
+  namespace: openshift-gitops
+spec:
+  generators:
+    - directory:
+        path: "test/overlay/env/"  # change each env (e.g. dc2, uat)
+        recurse: true
+  template:
+    metadata:
+      name: "{{path.basename}}-network-policy"
+    spec:
+      project: default  # change argo cd project?
+      source:
+        repoURL: https://github.com/nutjomjom/test-netpol.git  # git repo
+        targetRevision: HEAD  # branch
+        path: "test/overlay/env/{{path.basename}}"  # change each env (e.g. dc2, uat)
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
