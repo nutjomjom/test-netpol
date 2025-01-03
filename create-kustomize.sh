@@ -2,9 +2,6 @@
 
 # Input list of namespaces
 namespaces=(
-    nut-1
-    nut-2
-    nut-3
     nut-4
     nut-5
 )
