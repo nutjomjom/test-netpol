@@ -1,6 +1,14 @@
+# new kustomize
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: nut-1
 
 bases:
   - ../../../base
+
+resources:
+  - netpol2.yml
+
+patchesStrategicMerge:
+  - netpol-patch.yml
+
