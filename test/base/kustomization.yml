@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
   - netpol1.yml
-  - netpol2.yml
