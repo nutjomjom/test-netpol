@@ -1,0 +1,29 @@
+#static cluster name and environment
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-env-network-policies
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/nutjomjom/test-netpol.git
+        revision: HEAD
+        directories:
+          - path: test/overlay/env/*
+  template:
+    metadata:
+      name: "{{path.basename}}-network-policy"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/nutjomjom/test-netpol.git
+        targetRevision: HEAD
+        path: "test/overlay/env/{{path.basename}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

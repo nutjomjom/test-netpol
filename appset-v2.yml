@@ -1,3 +1,4 @@
+#dynamic environment?? << don't work
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -7,21 +8,22 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/nutjomjom/test-netpol.git
-        revision: test
+        revision: HEAD
         directories:
-          - path: test/overlay/*/*
+          - path: test/overlay/env/*
+          - path: test/overlay/env2/*  
   template:
     metadata:
-      name: "{{path.dirpath.basename}}-{{path.basename}}-network-policy"
+      name: "{{.path.basename}}-{{.path.basename}}-network-policy"
     spec:
       project: default
       source:
         repoURL: https://github.com/nutjomjom/test-netpol.git
-        targetRevision: test
-        path: "{{path}}"
+        targetRevision: HEAD
+        path: "test/overlay/{{.path.basename}}/{{.path.basename}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{path.basename}}"
+        namespace: "{{.path.basename}}"
       syncPolicy:
         automated:
           prune: true
