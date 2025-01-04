@@ -15,24 +15,24 @@
     apiVersion: argoproj.io/v1alpha1
     kind: ApplicationSet
     metadata:
-      name: test-network-policies
+      name: test-env-network-policies
       namespace: openshift-gitops
     spec:
       generators:
         - git:
             repoURL: https://github.com/nutjomjom/test-netpol.git
-            revision: test
+            revision: HEAD
             directories:
-              - path: test/overlay/*/*
+              - path: test/overlay/env/*
       template:
         metadata:
-          name: "{{path.dirpath.basename}}-{{path.basename}}-network-policy"
+          name: "{{path.basename}}-network-policy"
         spec:
           project: default
           source:
             repoURL: https://github.com/nutjomjom/test-netpol.git
-            targetRevision: test
-            path: "{{path}}"
+            targetRevision: HEAD
+            path: "test/overlay/env/{{path.basename}}"
           destination:
             server: https://kubernetes.default.svc
             namespace: "{{path.basename}}"
@@ -106,5 +106,35 @@
 ### Steps
 1. Create a new directory `env2` in the repository.
 2. Copy the structure from the existing `env` directory.
-3. Push the changes and verify if the new environment (`env2`) gets the correct network policies applied.
-4. Since we created a dynamic application set << new Argo CD app from new env directory should auto created
+3. Create and apply new `appset-env2.yml`
+    ```yaml
+    apiVersion: argoproj.io/v1alpha1
+    kind: ApplicationSet
+    metadata:
+      name: test-env2-network-policies
+      namespace: openshift-gitops
+    spec:
+      generators:
+        - git:
+            repoURL: https://github.com/nutjomjom/test-netpol.git
+            revision: HEAD
+            directories:
+              - path: test/overlay/env2/*
+      template:
+        metadata:
+          name: "{{path.basename}}-network-policy"
+        spec:
+          project: default
+          source:
+            repoURL: https://github.com/nutjomjom/test-netpol.git
+            targetRevision: HEAD
+            path: "test/overlay/env2/{{path.basename}}"
+          destination:
+            server: https://kubernetes.default.svc
+            namespace: "{{path.basename}}"
+          syncPolicy:
+            automated:
+              prune: true
+              selfHeal: true
+    ``` 
+4. Push the changes and verify if the new environment (`env2`) gets the correct network policies applied.
