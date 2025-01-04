@@ -2,6 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - allow-all-from-openshift-monitoring.yaml
-  - deny-all.yaml
-  - allow-namespace.yaml
+  - allow-all-from-openshift-monitoring.yml
+  - deny-all.yml
+  - allow-namespace.yml
