@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: consolidated-network-policies
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/nutjomjom/test-netpol.git
+    targetRevision: single-app
+    path: test/overlay
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nut-4
+  # syncPolicy:
+  #   automated:
+  #     prune: true
+  #     selfHeal: true

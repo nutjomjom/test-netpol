@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - allow-all-from-openshift-monitoring.yml
   - deny-all.yml
-  - allow-namespace.yml

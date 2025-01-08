@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: network-policies
+  namespace: openshift-gitops
+spec:
+  generators:
+    - list:
+        elements:
+          - namespace: nut-4
+          - namespace: nut-5
+  template:
+    metadata:
+      name: "network-policies-{{namespace}}"
+      labels:
+        app.kubernetes.io/part-of: network-policies
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/nutjomjom/test-netpol.git
+        targetRevision: single-app
+        path: "test/overlay/npd/{{namespace}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{namespace}}"
