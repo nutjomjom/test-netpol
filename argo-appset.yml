@@ -11,7 +11,7 @@ spec:
           - namespace: nut-5
   template:
     metadata:
-      name: "network-policies-{{namespace}}"
+      name: "{{namespace}}"
       labels:
         app.kubernetes.io/part-of: network-policies
     spec:
