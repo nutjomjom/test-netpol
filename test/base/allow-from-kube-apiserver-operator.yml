@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-kube-apiserver-operator
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values:
+          - openshift-kube-apiserver-operator
+          - default
+          - openshift-marketplace
+          - openshift-operator-lifecycle-manager
+  podSelector: {}
+  policyTypes:
+  - Ingress

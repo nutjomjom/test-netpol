@@ -1,0 +1,86 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: network-policy-template
+  namespace: openshift-config
+objects:
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: deny-by-default
+    spec:
+      podSelector: null
+      ingress: []
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-same-namespace
+    spec:
+      podSelector: null
+      ingress:
+        - from:
+            - podSelector: {}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-openshift-monitoring
+    spec:
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchExpressions:
+                  - key: kubernetes.io/metadata.name
+                    operator: In
+                    values:
+                      - openshift-monitoring
+                      - dynatrace
+                      - openshift-user-workload-monitoring
+                      - netobserv
+                      - netobserv-grafana
+      podSelector: {}
+      policyTypes:
+        - Ingress
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-openshift-ingress
+    spec:
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchExpressions:
+                  - key: kubernetes.io/metadata.name
+                    operator: In
+                    values:
+                      - openshift-ingress
+                      - openshift-dns
+      podSelector: {}
+      policyType:
+        - Ingress
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-kube-apiserver-operator
+    spec:
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchExpressions:
+                  - key: kubernetes.io/metadata.name
+                    operator: In
+                    values:
+                      - openshift-kube-apiserver-operator
+                      - default
+                      - openshift-marketplace
+                      - openshift-operator-lifecycle-manager
+      podSelector: {}
+      policyTypes:
+        - Ingress
+  - apiVersion: project.openshift.io/v1
+    kind: Project
+    metadata:
+      name: '${PROJECT_NAME}'
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+parameters:
+  - name: PROJECT_NAME

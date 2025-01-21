@@ -1,0 +1,29 @@
+#static cluster name and environment
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-npd-network-policies
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/nutjomjom/test-netpol.git
+        revision: main
+        directories:
+          - path: test/overlays/nut/*
+  template:
+    metadata:
+      name: "{{path.basename}}-npd-network-policy"
+    spec:
+      project: npd
+      source:
+        repoURL: https://github.com/nutjomjom/test-netpol.git
+        targetRevision: main
+        path: "test/overlays/nut/{{path.basename}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

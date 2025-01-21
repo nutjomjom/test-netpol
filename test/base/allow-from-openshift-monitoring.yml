@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-monitoring
+spec:
+  ingress:
+  # - from:
+    # - namespaceSelector:
+    #     matchLabels:
+    #       network.openshift.io/policy-group: monitoring
+  - from:
+    - namespaceSelector:
+        matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values:
+          - openshift-monitoring
+          - dynatrace
+          - openshift-user-workload-monitoring
+          - netobserv
+          - netobserv-grafana
+  podSelector: {}
+  policyTypes:
+  - Ingress
