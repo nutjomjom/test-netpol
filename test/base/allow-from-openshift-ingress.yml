@@ -17,5 +17,5 @@ spec:
           - openshift-ingress
           - openshift-dns          
   podSelector: {}
-  policyType:
+  policyTypes:
   - Ingress

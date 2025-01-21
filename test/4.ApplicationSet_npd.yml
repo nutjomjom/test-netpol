@@ -8,18 +8,18 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/nutjomjom/test-netpol.git
-        revision: main
+        revision: HEAD
         directories:
-          - path: test/overlays/nut/*
+          - path: test/overlay/nut/*
   template:
     metadata:
       name: "{{path.basename}}-npd-network-policy"
     spec:
-      project: npd
+      project: nut
       source:
         repoURL: https://github.com/nutjomjom/test-netpol.git
-        targetRevision: main
-        path: "test/overlays/nut/{{path.basename}}"
+        targetRevision: HEAD
+        path: "test/overlay/nut/{{path.basename}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{path.basename}}"
