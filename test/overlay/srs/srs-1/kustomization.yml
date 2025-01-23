@@ -4,5 +4,4 @@ namespace: srs-1
 
 resources:
   - ../../../base
-  - allow-namespace-nut-4.yml
-  - allow-namespace-nut-5.yml
+  - allow-namespace-srs-2.yml

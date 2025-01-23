@@ -4,3 +4,4 @@ namespace: srs-2
 
 resources:
   - ../../../base
+  - allow-namespace-srs-1.yml
