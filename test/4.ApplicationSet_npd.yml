@@ -10,16 +10,16 @@ spec:
         repoURL: https://github.com/nutjomjom/test-netpol.git
         revision: HEAD
         directories:
-          - path: test/overlay/nut/*
+          - path: test/overlay/srs/*
   template:
     metadata:
-      name: "{{path.basename}}-npd-network-policy"
+      name: "{{path.basename}}-srs-network-policy"
     spec:
-      project: nut
+      project: srs
       source:
         repoURL: https://github.com/nutjomjom/test-netpol.git
         targetRevision: HEAD
-        path: "test/overlay/nut/{{path.basename}}"
+        path: "test/overlay/srs/{{path.basename}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{path.basename}}"
