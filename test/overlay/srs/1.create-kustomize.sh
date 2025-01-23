@@ -2,9 +2,8 @@
 
 # namespace list
 namespaces=(
-nut-4
-nut-5
-nut-6
+srs-1
+srs-2
 )
 
 
